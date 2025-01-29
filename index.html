@@ -1334,7 +1334,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         const y = event.accelerationIncludingGravity.y;
         const z = event.accelerationIncludingGravity.z;
 
-        scene.gravity = -Math.sqrt(x * x + y * y + z * z);
+        scene.gravity = -Math.sqrt(x * x + y * y);
 
         // Calculate angle from accelerometer data
         window.gravityDirection = Math.atan2(-x, y) - Math.PI / 2;
