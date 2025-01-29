@@ -792,7 +792,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     const GRAVITY = -9.81;
 
-    const isGrid = Math.random() > 0.5;
+    const isGrid = Math.random() > 0.9;
 
     var scene = {
       gravity: GRAVITY,
@@ -828,15 +828,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       scene.numPressureIters = 75;
       scene.numParticleIters = 3;
-      var res = 50;
+      var res = 32;
 
       var tankHeight = 1.0 * simHeight;
       var tankWidth = 1.0 * simWidth;
       var h = tankHeight / res;
       var density = 1000.0;
 
-      var relWaterHeight = 0.8;
-      var relWaterWidth = 0.8;
+      var relWaterHeight = 0.7172;
+      var relWaterWidth = 0.7172;
 
       // dam break
 
@@ -888,7 +888,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       }
 
-      setObstacle(3.0, 2.0, true);
+      // setObstacle(3.0, 2.0, true);
     }
 
     // draw -------------------------------------------------------
