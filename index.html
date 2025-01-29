@@ -1332,9 +1332,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         console.log('Device motion event:', event);
         const x = event.accelerationIncludingGravity.x;
         const y = event.accelerationIncludingGravity.y;
-        // const z = event.accelerationIncludingGravity.z;
+        const z = event.accelerationIncludingGravity.z;
 
-        // scene.gravity = -Math.sqrt(x * x + y * y) * 9.81;
+        scene.gravity = z;
 
         // Calculate angle from accelerometer data
         window.gravityDirection = Math.atan2(-x, y) - Math.PI / 2;
