@@ -69,6 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     const GRID_SIZE = 14;
     const RENDER_SIZE = GRID_SIZE - 2;
     const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
+    const SCALE_TIME = 2;
 
     const realWidth = Math.ceil(window.innerWidth / GRID_SIZE + 2) * GRID_SIZE;
     const realHeight = Math.ceil(window.innerHeight / GRID_SIZE + 2) * GRID_SIZE;
@@ -868,7 +869,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     function setupScene() {
       scene.overRelaxation = 1.9;
 
-      scene.dt = 1.0 / 60.0;
+      scene.dt = 1.0 / 60.0 / SCALE_TIME;
       // defaults
       // scene.numPressureIters = 50;
       // scene.numParticleIters = 2;
@@ -1399,7 +1400,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           return;
         }
 
-        window.gravityVector = { x, y, z };
+        window.gravityVector = { x: x * SCALE_TIME, y: y * SCALE_TIME, z };
 
         scene.gravity =
           Math.sqrt(x * x + y * y + z * z) * -1;
