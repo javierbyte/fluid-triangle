@@ -147,9 +147,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       integrateParticles(dt, gravity) {
         for (var i = 0; i < this.numParticles; i++) {
-          const gravityDirection = window.gravityDirection || Math.PI / 2;
-          this.particleVel[2 * i] += dt * gravity * Math.cos(gravityDirection);
-          this.particleVel[2 * i + 1] += dt * gravity * Math.sin(gravityDirection);
+          let gravityX = 0;
+          let gravityY = GRAVITY;
+
+          if (window.gravityVector) {
+            gravityX = window.gravityVector.x;
+            gravityY = window.gravityVector.y;
+          }
+
+          this.particleVel[2 * i] += dt * gravityX;
+          this.particleVel[2 * i + 1] += dt * gravityY;
           this.particlePos[2 * i] += this.particleVel[2 * i] * dt;
           this.particlePos[2 * i + 1] += this.particleVel[2 * i + 1] * dt;
         }
@@ -1335,6 +1342,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         const x = event.accelerationIncludingGravity.x;
         const y = event.accelerationIncludingGravity.y;
         const z = event.accelerationIncludingGravity.z;
+
+        if (!x && !y && !z) {
+          console.warn('No acceleration data available');
+          return;
+        }
+
+        window.gravityVector = { x, y, z };
 
         scene.gravity =
           Math.sqrt(x * x + y * y + z * z) * -1;
