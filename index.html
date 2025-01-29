@@ -71,15 +71,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
     const SCALE_TIME = 2;
 
-    const realWidth = Math.ceil(window.innerWidth / GRID_SIZE + 2) * GRID_SIZE;
-    const realHeight = Math.ceil(window.innerHeight / GRID_SIZE + 2) * GRID_SIZE;
+    const ROUND_TO = GRID_SIZE * 4;
+
+    const realWidth = Math.ceil(window.innerWidth / ROUND_TO) * ROUND_TO + 2 * GRID_SIZE
+    const realHeight = Math.ceil(window.innerHeight / ROUND_TO) * ROUND_TO + 2 * GRID_SIZE
 
     const RESOLUTION = realHeight / GRID_SIZE;
 
     const GRAVITY = -9.81;
 
     var canvas = document.getElementById("myCanvas");
-    var gl = canvas.getContext("webgl");
 
     // const extraSized = window.innerHeight / RESOLUTION;
     const extraSized = 0;
@@ -92,9 +93,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     canvas.style.left = window.innerWidth / 2 - realWidth / 2 + "px";
     canvas.style.top = window.innerHeight / 2 - realHeight / 2 + "px";
 
+    var gl = canvas.getContext("webgl");
+
     canvas.focus();
 
     var simHeight = 2.0;
+
     var cScale = canvas.height / simHeight;
     var simWidth = canvas.width / cScale;
 
@@ -855,7 +859,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       separateParticles: true,
       obstacleX: 0.0,
       obstacleY: 0.0,
-      obstacleRadius: 0.15,
+      obstacleRadius: 0,
       // paused: true,
       paused: false,
       showObstacle: true,
@@ -1437,13 +1441,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     function update() {
-      // sin wave by time
-      const MAX_RADIUS = 0.3;
-      scene.obstacleRadius = Math.min(scene.obstacleRadius + 0.1, MAX_RADIUS);
-
-      // window.gravityDirection = new Date().getTime() / 1333;
-      // window.gravityDirection = window.gravityDirection % (2 * Math.PI);
-
+      const MAX_RADIUS = 0.333;
+      scene.obstacleRadius = (scene.obstacleRadius + MAX_RADIUS) / 2;
       simulate();
       draw();
       requestAnimationFrame(update);
