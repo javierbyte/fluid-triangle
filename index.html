@@ -50,7 +50,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     canvas {
-      /* render pixelated */
       image-rendering: pixelated;
     }
   </style>
@@ -67,21 +66,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <canvas id="myCanvas"></canvas>
 
   <script>
+    const GRID_SIZE = 14;
+    const RENDER_SIZE = GRID_SIZE - 2;
+    const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
+
+    const realWidth = Math.ceil(window.innerWidth / GRID_SIZE + 2) * GRID_SIZE;
+    const realHeight = Math.ceil(window.innerHeight / GRID_SIZE + 2) * GRID_SIZE;
+
+    const RESOLUTION = realHeight / GRID_SIZE;
+
     const GRAVITY = -9.81;
-    const RESOLUTION = 64;
 
     var canvas = document.getElementById("myCanvas");
     var gl = canvas.getContext("webgl");
 
-    const extraSized = window.innerHeight / RESOLUTION;
+    // const extraSized = window.innerHeight / RESOLUTION;
+    const extraSized = 0;
 
-    canvas.width = window.innerWidth + extraSized * 2;
-    canvas.height = window.innerHeight + extraSized * 2;
+    canvas.width = realWidth;
+    canvas.height = realHeight;
     canvas.style.width = canvas.width + "px";
     canvas.style.height = canvas.height + "px";
     canvas.style.position = "fixed";
-    canvas.style.left = -extraSized + "px";
-    canvas.style.top = -extraSized + "px";
+    canvas.style.left = window.innerWidth / 2 - realWidth / 2 + "px";
+    canvas.style.top = window.innerHeight / 2 - realHeight / 2 + "px";
 
     canvas.focus();
 
@@ -724,26 +732,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         var s = (val - num * m) / m;
         var r, g, b;
 
+        // switch (num) {
+        //   case 0:
+        //     r = 0.0;
+        //     g = s;
+        //     b = 1.0;
+        //     break;
+        //   case 1:
+        //     r = 0.0;
+        //     g = 1.0;
+        //     b = 1.0 - s;
+        //     break;
+        //   case 2:
+        //     r = s;
+        //     g = 1.0;
+        //     b = 0.0;
+        //     break;
+        //   case 3:
+        //     r = 1.0;
+        //     g = 1.0 - s;
+        //     b = 0.0;
+        //     break;
+        // }
+
         switch (num) {
           case 0:
-            r = 0.0;
+            r = s;
             g = s;
-            b = 1.0;
+            b = s;
             break;
           case 1:
-            r = 0.0;
-            g = 1.0;
+            r = 1.0 - s;
+            g = 1.0 - s;
             b = 1.0 - s;
             break;
           case 2:
             r = s;
-            g = 1.0;
-            b = 0.0;
+            g = s;
+            b = s;
             break;
           case 3:
-            r = 1.0;
+            r = 1.0 - s;
             g = 1.0 - s;
-            b = 0.0;
+            b = 1.0 - s;
             break;
         }
 
@@ -808,7 +839,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 
-    const isGrid = Math.random() > 0.5;
+    // const isGrid = Math.random() > 0.5;
+    const isGrid = 1;
 
     var scene = {
       gravity: GRAVITY,
@@ -827,7 +859,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       paused: false,
       showObstacle: true,
       obstacleVelX: 0.0,
-      obstacleVelY: GRAVITY,
+      obstacleVelY: 0.0,
       showParticles: !isGrid,
       showGrid: isGrid,
       fluid: null,
@@ -849,6 +881,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       var tankHeight = 1.0 * simHeight;
       var tankWidth = 1.0 * simWidth;
       var h = tankHeight / res;
+
+
+
       var density = 1000.0;
 
       var relWaterHeight = 0.7172;
@@ -1053,7 +1088,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if (gridColorBuffer == null) gridColorBuffer = gl.createBuffer();
 
       if (scene.showGrid) {
-        var pointSize = ((0.76 * scene.fluid.h) / simWidth) * canvas.width;
+        var pointSize = ((GRID_POINT_SIZE * scene.fluid.h) / simWidth) * canvas.width;
 
         gl.useProgram(pointShader);
         gl.uniform2f(
@@ -1368,9 +1403,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         scene.gravity =
           Math.sqrt(x * x + y * y + z * z) * -1;
-
-        // Calculate angle from accelerometer data
-        window.gravityDirection = Math.atan2(-x, y) - Math.PI / 2;
       });
     }
 
