@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="transparent">
 <meta name="apple-mobile-web-app-title" content="FLIP Fluid">
 
 <head>
@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     body {
       font-size: 15px;
       margin: 0;
+      background-color: #000000;
     }
 
     .button {
@@ -325,15 +326,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             let dy = y - closestPoint.y;
             let d = Math.sqrt(dx * dx + dy * dy);
             if (d > 0) {
-              x = closestPoint.x + dx / d * this.particleRadius;
-              y = closestPoint.y + dy / d * this.particleRadius;
+              x = closestPoint.x;
+              y = closestPoint.y;
             }
 
-            // this.particleVel[2 * i] = scene.obstacleVelX;
-            // this.particleVel[2 * i + 1] = scene.obstacleVelY;
+            this.particleVel[2 * i] = 0;
+            this.particleVel[2 * i + 1] = 0;
 
-            this.particleVel[2 * i] = this.particleVel[2 * i] / 2;
-            this.particleVel[2 * i + 1] = this.particleVel[2 * i + 1] / 2;
+
           }
 
           // wall collisions
@@ -803,8 +803,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       showObstacle: true,
       obstacleVelX: 0.0,
       obstacleVelY: GRAVITY,
-      showParticles: false,
-      showGrid: true,
+      showParticles: true,
+      showGrid: false,
       fluid: null,
     };
 
@@ -1123,8 +1123,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       // prepare disk mesh
       var numSegs = 3;
-      const renderScale = 0.9;
-      const diskColor = [1.0, 1.0, 1.0];
+      const renderScale = 1;
+      const diskColor = [0.0, 0.0, 0.0];
 
       if (diskVertBuffer == null) {
         diskVertBuffer = gl.createBuffer();
@@ -1172,15 +1172,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       //   diskColor[1],
       //   diskColor[2]
       // );
-      gl.uniform2f(
-        gl.getUniformLocation(meshShader, "translation"),
-        scene.obstacleX,
-        scene.obstacleY
-      );
-      gl.uniform1f(
-        gl.getUniformLocation(meshShader, "scale"),
-        renderScale * scene.obstacleRadius + scene.fluid.particleRadius
-      );
+      // gl.uniform2f(
+      //   gl.getUniformLocation(meshShader, "translation"),
+      //   scene.obstacleX,
+      //   scene.obstacleY
+      // );
+      // gl.uniform1f(
+      //   gl.getUniformLocation(meshShader, "scale"),
+      //   renderScale * scene.obstacleRadius + scene.fluid.particleRadius
+      // );
 
       posLoc = gl.getAttribLocation(meshShader, "attrPosition");
       gl.enableVertexAttribArray(posLoc);
@@ -1267,6 +1267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     canvas.addEventListener("mousedown", (event) => {
+      scene.obstacleRadius = 0.0;
       startDrag(event.x, event.y);
     });
 
@@ -1371,7 +1372,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     function update() {
       // sin wave by time
-      const MAX_RADIUS = 0.5;
+      const MAX_RADIUS = 0.3;
       scene.obstacleRadius = Math.min(scene.obstacleRadius + 0.1, MAX_RADIUS);
 
       // window.gravityDirection = new Date().getTime() / 1333;
