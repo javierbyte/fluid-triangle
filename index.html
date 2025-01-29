@@ -48,6 +48,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       -webkit-transition: 0.2s;
       transition: opacity 0.2s;
     }
+
+    canvas {
+      /* render pixelated */
+      image-rendering: pixelated;
+    }
   </style>
 </head>
 
@@ -62,18 +67,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <canvas id="myCanvas"></canvas>
 
   <script>
+    const GRAVITY = -9.81;
+    const RESOLUTION = 64;
+
     var canvas = document.getElementById("myCanvas");
     var gl = canvas.getContext("webgl");
 
-    const extraSized = 48;
+    const extraSized = window.innerHeight / RESOLUTION;
 
-    canvas.width = window.innerWidth + extraSized;
-    canvas.height = window.innerHeight + extraSized;
+    canvas.width = window.innerWidth + extraSized * 2;
+    canvas.height = window.innerHeight + extraSized * 2;
     canvas.style.width = canvas.width + "px";
     canvas.style.height = canvas.height + "px";
     canvas.style.position = "fixed";
-    canvas.style.left = -extraSized / 2 + "px";
-    canvas.style.top = -extraSized / 2 + "px";
+    canvas.style.left = -extraSized + "px";
+    canvas.style.top = -extraSized + "px";
 
     canvas.focus();
 
@@ -798,7 +806,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     // ----------------- end of simulator ------------------------------
 
-    const GRAVITY = -9.81;
+
 
     const isGrid = Math.random() > 0.5;
 
@@ -836,7 +844,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       scene.numPressureIters = 75;
       scene.numParticleIters = 3;
-      var res = 32;
+      var res = RESOLUTION;
 
       var tankHeight = 1.0 * simHeight;
       var tankWidth = 1.0 * simWidth;
@@ -1045,7 +1053,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if (gridColorBuffer == null) gridColorBuffer = gl.createBuffer();
 
       if (scene.showGrid) {
-        var pointSize = ((0.9 * scene.fluid.h) / simWidth) * canvas.width;
+        var pointSize = ((0.76 * scene.fluid.h) / simWidth) * canvas.width;
 
         gl.useProgram(pointShader);
         gl.uniform2f(
