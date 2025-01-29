@@ -803,8 +803,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       showObstacle: true,
       obstacleVelX: 0.0,
       obstacleVelY: GRAVITY,
-      showParticles: true,
-      showGrid: false,
+      showParticles: false,
+      showGrid: true,
       fluid: null,
     };
 
@@ -819,7 +819,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       scene.numPressureIters = 75;
       scene.numParticleIters = 3;
-      var res = 40;
+      var res = 50;
 
       var tankHeight = 1.0 * simHeight;
       var tankWidth = 1.0 * simWidth;
@@ -827,7 +827,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       var density = 1000.0;
 
       var relWaterHeight = 0.8;
-      var relWaterWidth = 0.6;
+      var relWaterWidth = 0.8;
 
       // dam break
 
