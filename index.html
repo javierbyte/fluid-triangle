@@ -785,6 +785,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     const GRAVITY = -9.81;
 
+    const isGrid = Math.random() > 0.5;
+
     var scene = {
       gravity: GRAVITY,
       dt: 1.0 / 120.0,
@@ -803,8 +805,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       showObstacle: true,
       obstacleVelX: 0.0,
       obstacleVelY: GRAVITY,
-      showParticles: true,
-      showGrid: false,
+      showParticles: !isGrid,
+      showGrid: isGrid,
       fluid: null,
     };
 
