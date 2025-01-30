@@ -57,6 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
     const SCALE_TIME = 1;
     const SPEED_1 = 1.0 / 60.0 / 16;
+    const SPEED_BASE = 1.0 / 60.0 / 3;
     const SPEED_2 = 1.0 / 60.0 / 1.5;
 
     const realWidth = window.innerWidth + 2 * GRID_SIZE;
@@ -901,7 +902,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     var scene = {
       gravity: GRAVITY,
-      dt: SPEED_1,
+      dt: SPEED_BASE,
       flipRatio: 0.9,
       numPressureIters: 40,
       numParticleIters: 2,
