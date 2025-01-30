@@ -38,31 +38,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       cursor: pointer;
     }
 
-    .slider {
-      width: 80px;
-      height: 6px;
-      border-radius: 5px;
-      background: #d3d3d3;
-      outline: none;
-      opacity: 0.7;
-      -webkit-transition: 0.2s;
-      transition: opacity 0.2s;
-    }
-
     canvas {
       image-rendering: pixelated;
+      position: fixed;
+      top: -12px;
+      left: -12px;
     }
   </style>
 </head>
 
 <body>
-  <!-- <input type = "checkbox" checked  onclick = "scene.showParticles = !scene.showParticles">Particles &nbsp; 
-	<input type = "checkbox" onclick = "scene.showGrid = !scene.showGrid">Grid &nbsp;
-	<input type = "checkbox" checked onclick = "scene.compensateDrift = !scene.compensateDrift">Compensate Drift &nbsp;
-	<input type = "checkbox" checked onclick = "scene.separateParticles = !scene.separateParticles">Separate Particles &nbsp;
-	PIC
-	<input type = "range" min = "0" max = "10" value = "9" class = "slider" onchange="scene.flipRatio = 0.1 * this.value"> FLIP 
-<br> -->
   <canvas id="myCanvas"></canvas>
 
   <script>
@@ -71,10 +56,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
     const SCALE_TIME = 2;
 
-    const ROUND_TO = GRID_SIZE * 4;
 
-    const realWidth = Math.ceil(window.innerWidth / ROUND_TO) * ROUND_TO + 2 * GRID_SIZE
-    const realHeight = Math.ceil(window.innerHeight / ROUND_TO) * ROUND_TO + 2 * GRID_SIZE
+    const realWidth = window.innerWidth + 2 * GRID_SIZE
+    const realHeight = window.innerHeight + 2 * GRID_SIZE
 
     const RESOLUTION = realHeight / GRID_SIZE;
 
@@ -82,16 +66,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     var canvas = document.getElementById("myCanvas");
 
-    // const extraSized = window.innerHeight / RESOLUTION;
     const extraSized = 0;
 
     canvas.width = realWidth;
     canvas.height = realHeight;
-    canvas.style.width = canvas.width + "px";
-    canvas.style.height = canvas.height + "px";
-    canvas.style.position = "fixed";
-    canvas.style.left = window.innerWidth / 2 - realWidth / 2 + "px";
-    canvas.style.top = window.innerHeight / 2 - realHeight / 2 + "px";
+    canvas.style.width = realWidth + "px";
+    canvas.style.height = realHeight + "px";
 
     var gl = canvas.getContext("webgl");
 
@@ -860,8 +840,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       obstacleX: 0.0,
       obstacleY: 0.0,
       obstacleRadius: 0,
-      // paused: true,
-      paused: false,
+      paused: true,
       showObstacle: true,
       obstacleVelX: 0.0,
       obstacleVelY: 0.0,
@@ -879,20 +858,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // scene.numParticleIters = 2;
       // var res = 100;
 
-      scene.numPressureIters = 75;
-      scene.numParticleIters = 3;
+      scene.numPressureIters = 40;
+      scene.numParticleIters = 2;
       var res = RESOLUTION;
 
       var tankHeight = 1.0 * simHeight;
       var tankWidth = 1.0 * simWidth;
       var h = tankHeight / res;
 
-
-
       var density = 1000.0;
 
-      var relWaterHeight = 0.7172;
-      var relWaterWidth = 0.7172;
+      var relWaterHeight = 0.6;
+      var relWaterWidth = 1;
 
       // dam break
 
@@ -927,8 +904,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       var p = 0;
       for (var i = 0; i < numX; i++) {
         for (var j = 0; j < numY; j++) {
-          f.particlePos[p++] = h + r + dx * i + (j % 2 == 0 ? 0.0 : r);
-          f.particlePos[p++] = h + r + dy * j;
+          // Center horizontally by adding offset to x position
+          let xOffset = (tankWidth - numX * dx) / 2;
+          // Center vertically by adding offset to y position 
+          let yOffset = (tankHeight - numY * dy) * -0.5;
+
+          f.particlePos[p++] = h + r + dx * i + (j % 2 == 0 ? 0.0 : r) + xOffset;
+          f.particlePos[p++] = h + r + dy * j + yOffset;
         }
       }
 
@@ -944,7 +926,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       }
 
-      // setObstacle(3.0, 2.0, true);
     }
 
     // draw -------------------------------------------------------
@@ -1072,7 +1053,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         meshShader = createShader(gl, meshVertexShader, meshFragmentShader);
 
       // grid
-
       if (gridVertBuffer == null) {
         var f = scene.fluid;
         gridVertBuffer = gl.createBuffer();
@@ -1094,6 +1074,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       if (scene.showGrid) {
         var pointSize = ((GRID_POINT_SIZE * scene.fluid.h) / simWidth) * canvas.width;
+
+
 
         gl.useProgram(pointShader);
         gl.uniform2f(
@@ -1132,7 +1114,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
 
       // water
-
       if (scene.showParticles) {
         gl.clear(gl.DEPTH_BUFFER_BIT);
 
@@ -1376,6 +1357,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
     });
 
+    // on window resize, refresh
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    });
+
     // Request device motion permission if available
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
       window.addEventListener('click', async () => {
@@ -1404,7 +1394,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           return;
         }
 
-        window.gravityVector = { x: x * SCALE_TIME, y: y * SCALE_TIME, z };
+        window.gravityVector = { x, y, z };
 
         scene.gravity =
           Math.sqrt(x * x + y * y + z * z) * -1;
@@ -1441,8 +1431,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     function update() {
-      const MAX_RADIUS = 0.333;
-      scene.obstacleRadius = (scene.obstacleRadius + MAX_RADIUS) / 2;
+      // 0.5 if horizontal screen, 1 if vertical
+      const MAX_RADIUS = window.innerWidth > window.innerHeight ? 0.5 : 0.33;
+      scene.obstacleRadius = (scene.obstacleRadius * 3 + MAX_RADIUS) / 4;
       simulate();
       draw();
       requestAnimationFrame(update);
@@ -1450,7 +1441,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     setupScene();
     // draw obstacle in the middle
-    startDrag(window.innerWidth / 2, window.innerHeight / 2);
+    startDrag(window.innerWidth / 2, window.innerHeight * .54);
     endDrag();
     update();
   </script>
