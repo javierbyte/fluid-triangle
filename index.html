@@ -30,8 +30,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     canvas {
       image-rendering: pixelated;
       position: fixed;
-      top: -12px;
-      left: -12px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   </style>
 </head>
@@ -1409,7 +1410,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     function update() {
       // 0.5 if horizontal screen, 1 if vertical
-      const MAX_RADIUS = window.innerWidth > window.innerHeight ? 0.5 : 0.33;
+      const MAX_RADIUS = window.innerWidth > window.innerHeight ? 0.5 : 0.4;
       scene.obstacleRadius = (scene.obstacleRadius * 3 + MAX_RADIUS) / 4;
       simulate();
       draw();
