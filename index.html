@@ -16,26 +16,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="transparent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="FLIP Fluid">
 
 <head>
   <title>FLIP Fluid</title>
   <style>
     body {
-      font-size: 15px;
       margin: 0;
       background-color: #000000;
-    }
-
-    .button {
-      background-color: #606060;
-      border: none;
-      color: white;
-      padding: 10px 10px;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
     }
 
     canvas {
@@ -48,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 </head>
 
 <body>
-  <canvas id="myCanvas"></canvas>
+  <canvas id="canvas"></canvas>
 
   <script>
     const GRID_SIZE = 12;
@@ -64,7 +53,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     const GRAVITY = -9.81;
 
-    var canvas = document.getElementById("myCanvas");
+    var canvas = document.getElementById("canvas");
 
     const extraSized = 0;
 
@@ -829,9 +818,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     var scene = {
       gravity: GRAVITY,
-      dt: 1.0 / 120.0,
+      dt: 1.0 / 60.0 / SCALE_TIME,
       flipRatio: 0.9,
-      numPressureIters: 100,
+      numPressureIters: 40,
       numParticleIters: 2,
       frameNr: 0,
       overRelaxation: 1.9,
@@ -850,16 +839,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     };
 
     function setupScene() {
-      scene.overRelaxation = 1.9;
-
-      scene.dt = 1.0 / 60.0 / SCALE_TIME;
-      // defaults
-      // scene.numPressureIters = 50;
-      // scene.numParticleIters = 2;
-      // var res = 100;
-
-      scene.numPressureIters = 40;
-      scene.numParticleIters = 2;
       var res = RESOLUTION;
 
       var tankHeight = 1.0 * simHeight;
@@ -1165,46 +1144,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
       }
 
-      // disk
+      // disk - I don't want to render the disk
 
       // prepare disk mesh
-      var numSegs = 3;
-      const renderScale = 1;
-      const diskColor = [0.0, 0.0, 0.0];
+      // var numSegs = 3;
+      // const renderScale = 1;
+      // const diskColor = [0.0, 0.0, 0.0];
 
-      if (diskVertBuffer == null) {
-        diskVertBuffer = gl.createBuffer();
-        var dphi = (2.0 * Math.PI) / numSegs;
-        var diskVerts = new Float32Array(2 * numSegs + 2);
-        var p = 0;
-        diskVerts[p++] = 0.0;
-        diskVerts[p++] = 0.0;
-        for (var i = 0; i < numSegs; i++) {
-          diskVerts[p++] = Math.cos(i * dphi + Math.PI / 2);
-          diskVerts[p++] = Math.sin(i * dphi + Math.PI / 2);
-        }
-        gl.bindBuffer(gl.ARRAY_BUFFER, diskVertBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, diskVerts, gl.DYNAMIC_DRAW);
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+      // if (diskVertBuffer == null) {
+      //   diskVertBuffer = gl.createBuffer();
+      //   var dphi = (2.0 * Math.PI) / numSegs;
+      //   var diskVerts = new Float32Array(2 * numSegs + 2);
+      //   var p = 0;
+      //   diskVerts[p++] = 0.0;
+      //   diskVerts[p++] = 0.0;
+      //   for (var i = 0; i < numSegs; i++) {
+      //     diskVerts[p++] = Math.cos(i * dphi + Math.PI / 2);
+      //     diskVerts[p++] = Math.sin(i * dphi + Math.PI / 2);
+      //   }
+      //   gl.bindBuffer(gl.ARRAY_BUFFER, diskVertBuffer);
+      //   gl.bufferData(gl.ARRAY_BUFFER, diskVerts, gl.DYNAMIC_DRAW);
+      //   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-        diskIdBuffer = gl.createBuffer();
-        var diskIds = new Uint16Array(3 * numSegs);
-        p = 0;
-        for (var i = 0; i < numSegs; i++) {
-          diskIds[p++] = 0;
-          diskIds[p++] = 1 + i;
-          diskIds[p++] = 1 + ((i + 1) % numSegs);
-        }
+      //   diskIdBuffer = gl.createBuffer();
+      //   var diskIds = new Uint16Array(3 * numSegs);
+      //   p = 0;
+      //   for (var i = 0; i < numSegs; i++) {
+      //     diskIds[p++] = 0;
+      //     diskIds[p++] = 1 + i;
+      //     diskIds[p++] = 1 + ((i + 1) % numSegs);
+      //   }
 
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, diskIdBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, diskIds, gl.DYNAMIC_DRAW);
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-      }
+      //   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, diskIdBuffer);
+      //   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, diskIds, gl.DYNAMIC_DRAW);
+      //   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      // }
 
-      gl.clear(gl.DEPTH_BUFFER_BIT);
+      // gl.clear(gl.DEPTH_BUFFER_BIT);
 
 
-      gl.useProgram(meshShader);
+      // gl.useProgram(meshShader);
 
       // DRAW DISC
       // gl.uniform2f(
@@ -1228,15 +1207,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       //   renderScale * scene.obstacleRadius + scene.fluid.particleRadius
       // );
 
-      posLoc = gl.getAttribLocation(meshShader, "attrPosition");
-      gl.enableVertexAttribArray(posLoc);
-      gl.bindBuffer(gl.ARRAY_BUFFER, diskVertBuffer);
-      gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+      // posLoc = gl.getAttribLocation(meshShader, "attrPosition");
+      // gl.enableVertexAttribArray(posLoc);
+      // gl.bindBuffer(gl.ARRAY_BUFFER, diskVertBuffer);
+      // gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, diskIdBuffer);
-      gl.drawElements(gl.TRIANGLES, 3 * numSegs, gl.UNSIGNED_SHORT, 0);
+      // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, diskIdBuffer);
+      // gl.drawElements(gl.TRIANGLES, 3 * numSegs, gl.UNSIGNED_SHORT, 0);
 
-      gl.disableVertexAttribArray(posLoc);
+      // gl.disableVertexAttribArray(posLoc);
     }
 
     function setObstacle(x, y, reset) {
@@ -1387,17 +1366,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         console.log('Device motion event:', event);
         const x = event.accelerationIncludingGravity.x;
         const y = event.accelerationIncludingGravity.y;
-        const z = event.accelerationIncludingGravity.z;
 
-        if (!x && !y && !z) {
+        if (!x && !y) {
           console.warn('No acceleration data available');
           return;
         }
 
-        window.gravityVector = { x, y, z };
+        window.gravityVector = { x, y };
 
-        scene.gravity =
-          Math.sqrt(x * x + y * y + z * z) * -1;
+        scene.gravity = 0;
       });
     }
 
