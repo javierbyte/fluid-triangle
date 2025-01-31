@@ -1,3 +1,5 @@
+const RENDER_CHAR_DICTIONARY = " ··-~=+O#@@";
+
 const canvasEl = document.getElementById("canvas");
 const renderEl = document.querySelector(".render");
 
@@ -1087,16 +1089,12 @@ function update() {
     for (let j = 1; j < f.fNumX - 1; j++) {
       const cellColor = f.cellColor[3 * (j * f.fNumY + i)];
 
-      let char = " ";
-
-      const chars = " ··-~=+O#@@";
-
-      const index = Math.floor(cellColor * chars.length);
-      char = chars[index];
-
-      row += char;
+      row +=
+        RENDER_CHAR_DICTIONARY[
+          Math.floor(cellColor * RENDER_CHAR_DICTIONARY.length)
+        ];
     }
-    toRender += "<div>" + row + "</div>";
+    toRender += row + "\n";
   }
 
   renderEl.innerHTML = toRender;
