@@ -1127,34 +1127,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     });
 
     // Request device motion permission if available
-    if (
-      typeof DeviceMotionEvent !== "undefined" &&
-      typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-      window.addEventListener(
-        "click",
-        async () => {
-          try {
-            const permission =
-              await DeviceMotionEvent.requestPermission();
-            if (permission === "granted") {
-              setupDeviceMotion();
-            }
-          } catch (err) {
-            console.error(
-              "Error requesting device motion permission:",
-              err
-            );
+    async function requestDeviceMotion() {
+      if (typeof DeviceMotionEvent?.requestPermission === "function") {
+        try {
+          const permission = await DeviceMotionEvent.requestPermission();
+          if (permission === "granted") {
+            setupDeviceMotion();
           }
-        },
-        {
-          once: true,
+        } catch (err) {
+          console.error("Error requesting device motion permission:", err);
         }
-      );
-    } else {
-      setupDeviceMotion();
+      } else {
+        setupDeviceMotion();
+      }
     }
 
+    canvas.addEventListener("click", requestDeviceMotion, { once: true });
+    document.addEventListener("touchend", requestDeviceMotion, { once: true });
     function setupDeviceMotion() {
       window.addEventListener("devicemotion", (event) => {
         console.log("Device motion event:", event);
