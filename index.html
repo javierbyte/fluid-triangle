@@ -1094,7 +1094,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       "touchmove",
       (event) => {
         event.preventDefault();
-        event.stopImmediatePropagation();
         drag(event.touches[0].clientX, event.touches[0].clientY);
       },
       {
@@ -1129,7 +1128,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       typeof DeviceMotionEvent !== "undefined" &&
       typeof DeviceMotionEvent.requestPermission === "function"
     ) {
-      renderEl.addEventListener(
+      window.addEventListener(
         "click",
         async () => {
           try {
@@ -1210,13 +1209,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     function update() {
-      // 0.5 if horizontal screen, 1 if vertical
       const MAX_RADIUS =
         window.innerWidth > window.innerHeight ? 0.5 : 0.4;
       scene.obstacleRadius =
         (scene.obstacleRadius * 3 + MAX_RADIUS) / 4;
       simulate();
-      // draw();
 
       let toRender = "";
 
