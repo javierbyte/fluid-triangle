@@ -53,6 +53,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     .render {
       /* render whitespace */
+      font-weight: 700;
       white-space: pre;
 
       font-size: 10px;
@@ -1588,7 +1589,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           let char = " ";
 
 
-          const chars = '  ..-~=O#@';  // 10 steps from empty to full
+          const chars = '  ·-~=O#@';  // 10 steps from empty to full
           const index = Math.floor(cellColor * (chars.length)); // Map 0-1 to 0-9
           char = chars[index];
 
