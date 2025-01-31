@@ -106,7 +106,7 @@ class FlipFluid {
     this.numParticles = 0;
   }
 
-  integrateParticles(dt, gravity) {
+  integrateParticles(dt) {
     for (var i = 0; i < this.numParticles; i++) {
       let gravityX = 0;
       let gravityY = GRAVITY;
