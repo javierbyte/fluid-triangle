@@ -1129,7 +1129,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       typeof DeviceMotionEvent !== "undefined" &&
       typeof DeviceMotionEvent.requestPermission === "function"
     ) {
-      window.addEventListener(
+      renderEl.addEventListener(
         "click",
         async () => {
           try {
@@ -1227,9 +1227,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
           let char = " ";
 
-          const chars = " ·-~=o@#$%█";
+          const chars = " ··-~=+O#@@";
 
-          const index = Math.floor(cellColor * chars.length); // Map 0-1 to 0-9
+          const index = Math.floor(cellColor * chars.length);
           char = chars[index];
 
           row += char;
