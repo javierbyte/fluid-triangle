@@ -57,8 +57,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      filter: grayscale(100%);
       opacity: 0;
+      z-index: 10;
     }
 
     .render {
@@ -73,7 +73,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       left: 50%;
       transform: translate(-50%, -50%);
 
-      z-index: 10;
     }
 
     .c0 {
@@ -1067,37 +1066,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       scene.obstacleVelY = 0.0;
     }
 
-    document.body.addEventListener("mousedown", (event) => {
+    canvas.addEventListener("mousedown", (event) => {
       scene.obstacleRadius = 0.0;
       scene.dt = SPEED_1;
       startDrag(event.x, event.y);
     });
 
-    document.body.addEventListener("mouseup", (event) => {
+    canvas.addEventListener("mouseup", (event) => {
       scene.dt = SPEED_2;
       endDrag();
     });
 
-    document.body.addEventListener("mousemove", (event) => {
+    canvas.addEventListener("mousemove", (event) => {
       drag(event.x, event.y);
     });
 
-    document.body.addEventListener("touchstart", (event) => {
+    canvas.addEventListener("touchstart", (event) => {
       event.preventDefault();
       scene.obstacleRadius = 0.0;
       scene.dt = SPEED_1;
       startDrag(event.touches[0].clientX, event.touches[0].clientY);
     });
 
-    document.body.addEventListener("touchend", (event) => {
+    canvas.addEventListener("touchend", (event) => {
       scene.dt = SPEED_2;
       endDrag();
     });
 
-    document.body.addEventListener(
+    canvas.addEventListener(
       "touchmove",
       (event) => {
-        event.preventDefault();
+        event.stopImmediatePropagation();
         drag(event.touches[0].clientX, event.touches[0].clientY);
       },
       {
