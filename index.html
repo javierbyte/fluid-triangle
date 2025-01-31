@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <html>
 
 <head>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -33,6 +34,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     body {
       margin: 0;
       background-color: #000000;
+      color: #fff;
+      font-family: "Geist Mono", "Geist Mono Fallback", ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
     canvas {
@@ -41,9 +44,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-
-      /* make graysacle */
       filter: grayscale(100%);
+      opacity: 0;
+      z-index: 10;
+    }
+
+
+
+    .render {
+      font-size: 20px;
+      letter-spacing: 3.7px;
+      line-height: .8;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   </style>
 </head>
@@ -51,8 +66,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <body>
   <canvas id="canvas"></canvas>
 
+  <div class="render">
+    hola
+  </div>
+
   <script>
-    const GRID_SIZE = 12;
+    // const GRID_SIZE = 12;
+    const GRID_SIZE = 16;
     const RENDER_SIZE = GRID_SIZE - 2;
     const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
     const SCALE_TIME = 1;
@@ -989,7 +1009,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           f.s[i * n + j] = s;
         }
       }
+
     }
+
 
     // draw -------------------------------------------------------
 
@@ -1123,7 +1145,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       // grid
       if (gridVertBuffer == null) {
+
         var f = scene.fluid;
+
         gridVertBuffer = gl.createBuffer();
         var cellCenters = new Float32Array(2 * f.fNumCells);
         var p = 0;
@@ -1134,6 +1158,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             cellCenters[p++] = (j + 0.5) * f.h;
           }
         }
+
         gl.bindBuffer(gl.ARRAY_BUFFER, gridVertBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, cellCenters, gl.DYNAMIC_DRAW);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
@@ -1541,6 +1566,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         (scene.obstacleRadius * 3 + MAX_RADIUS) / 4;
       simulate();
       draw();
+
+      console.log(f.cellType.join(" "))
+
+      // f.pNumX is the row len ght
+      // f.cellType is an array of 0, 1
+      // log the state in a readable wayt
+
+      let toRender = "";
+
+      // Skip first and last rows/columns when rendering
+      for (let i = f.fNumY - 2; i > 0; i--) {
+        let row = "";
+        for (let j = 1; j < f.fNumX - 1; j++) {
+          row += f.cellType[j * f.fNumY + i];
+        }
+        toRender += row + "<br>";
+      }
+
+      document.querySelector(".render").innerHTML = toRender
+
+
+
       requestAnimationFrame(update);
     }
 
