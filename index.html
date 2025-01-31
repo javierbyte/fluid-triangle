@@ -55,13 +55,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       /* render whitespace */
       white-space: pre;
 
-      font-size: 13.4px;
-      letter-spacing: 3.7px;
-      line-height: .88;
+      font-size: 10px;
+      letter-spacing: 4px;
+      line-height: 10px;
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(1.08);
     }
   </style>
 </head>
@@ -74,8 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   </div>
 
   <script>
-    const GRID_SIZE = 12;
-    // const GRID_SIZE = 16;
+    const GRID_SIZE = 11;
     const RENDER_SIZE = GRID_SIZE - 2;
     const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
     const SCALE_TIME = 1;
@@ -1589,7 +1588,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           let char = " ";
 
 
-          const chars = ' .-X@';  // 10 steps from empty to full
+          const chars = '  ..-~=O#@';  // 10 steps from empty to full
           const index = Math.floor(cellColor * (chars.length)); // Map 0-1 to 0-9
           char = chars[index];
 
