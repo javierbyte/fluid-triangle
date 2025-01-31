@@ -52,14 +52,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
     .render {
-      font-size: 20px;
+      /* render whitespace */
+      white-space: pre;
+
+      font-size: 13.4px;
       letter-spacing: 3.7px;
-      line-height: .8;
+      line-height: .88;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      white-space: nowrap;
     }
   </style>
 </head>
@@ -72,8 +74,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   </div>
 
   <script>
-    // const GRID_SIZE = 12;
-    const GRID_SIZE = 16;
+    const GRID_SIZE = 12;
+    // const GRID_SIZE = 16;
     const RENDER_SIZE = GRID_SIZE - 2;
     const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
     const SCALE_TIME = 1;
@@ -1580,7 +1582,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         let row = "";
         for (let j = 1; j < f.fNumX - 1; j++) {
           const cellType = f.cellType[j * f.fNumY + i];
-          let char = cellType == 0 ? "#" : ".";
+
+          const cellColor = f.cellColor[3 * (j * f.fNumY + i)]
+          // const cellColor = f.cellColor[3 * (j * f.fNumY + i) + 1]
+
+          let char = " ";
+
+
+          const chars = ' .-X@';  // 10 steps from empty to full
+          const index = Math.floor(cellColor * (chars.length)); // Map 0-1 to 0-9
+          char = chars[index];
 
           row += char;
         }
