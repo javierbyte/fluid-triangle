@@ -4,7 +4,7 @@ const canvasEl = document.getElementById("canvas");
 const renderEl = document.querySelector(".render");
 
 const GRID_SIZE =
-  window.innerWidth > 1280 ? 14 : window.innerWidth > 780 ? 12 : 10;
+  window.innerWidth > 1440 ? 14 : window.innerWidth > 780 ? 12 : 10;
 const SCALE_TIME = 1;
 const SPEED_1 = 1.0 / 60.0 / 16;
 const SPEED_BASE = 1.0 / 60.0 / 3;
