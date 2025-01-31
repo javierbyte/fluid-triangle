@@ -1562,6 +1562,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       scene.frameNr++;
     }
 
+    const renderEl = document.querySelector(".render");
+
     function update() {
       // 0.5 if horizontal screen, 1 if vertical
       const MAX_RADIUS =
@@ -1571,27 +1573,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       simulate();
       draw();
 
-      console.log(f.cellType.join(" "))
-
-      // f.pNumX is the row len ght
-      // f.cellType is an array of 0, 1
-      // log the state in a readable wayt
-
       let toRender = "";
 
       // Skip first and last rows/columns when rendering
       for (let i = f.fNumY - 2; i > 0; i--) {
         let row = "";
         for (let j = 1; j < f.fNumX - 1; j++) {
-          const cellType = f.cellType[j * f.fNumY + i];
 
           const cellColor = f.cellColor[3 * (j * f.fNumY + i)]
-          // const cellColor = f.cellColor[3 * (j * f.fNumY + i) + 1]
 
           let char = " ";
 
-
-          const chars = '  ·-~▫O#@';  // 10 steps from empty to full
+          const chars = ' ·-~=oO#@';  // 10 steps from empty to full
           const index = Math.floor(cellColor * (chars.length)); // Map 0-1 to 0-9
           char = chars[index];
 
@@ -1600,7 +1593,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         toRender += row + "<br>";
       }
 
-      document.querySelector(".render").innerHTML = toRender
+      renderEl.innerHTML = toRender
 
 
 
