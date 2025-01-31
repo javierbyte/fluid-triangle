@@ -59,6 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -918,7 +919,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     // ----------------- end of simulator ------------------------------
 
     // const isGrid = Math.random() > 0.5;
-    const isGrid = 1;
 
     var scene = {
       gravity: GRAVITY,
@@ -937,8 +937,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       showObstacle: true,
       obstacleVelX: 0.0,
       obstacleVelY: 0.0,
-      showParticles: !isGrid,
-      showGrid: isGrid,
+      showParticles: false,
+      showGrid: false,
       fluid: null,
     };
 
@@ -1579,7 +1579,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       for (let i = f.fNumY - 2; i > 0; i--) {
         let row = "";
         for (let j = 1; j < f.fNumX - 1; j++) {
-          row += f.cellType[j * f.fNumY + i];
+          const cellType = f.cellType[j * f.fNumY + i];
+          let char = cellType == 0 ? "#" : ".";
+
+          row += char;
         }
         toRender += row + "<br>";
       }
