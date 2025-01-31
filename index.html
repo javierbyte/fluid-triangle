@@ -29,6 +29,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <meta property="og:url" content="https://fluid-triangle.vercel.app" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+
   <title>Triangle FLIP Fluid</title>
   <style>
     * {
@@ -56,29 +61,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
     .render {
-      font-weight: 700;
+      font-weight: 900;
       white-space: pre;
 
-      font-size: 10px;
-      letter-spacing: 4px;
-      line-height: 10px;
+      font-size: 12px;
+      letter-spacing: 4.6px;
+      line-height: 12px;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-    }
-
-    .render div {
-      height: 12px;
-      width: 100vw;
-      display: flex;
-    }
-
-    .render div div {
-      height: 10px;
-      width: 10px;
-      margin: 1px;
-      display: block;
     }
 
     .c0 {
@@ -1554,12 +1546,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     function setupDeviceMotion() {
       window.addEventListener("devicemotion", (event) => {
         console.log("Device motion event:", event);
-        const x = event.accelerationIncludingGravity.x;
-        const y = event.accelerationIncludingGravity.y;
+        let x = event.accelerationIncludingGravity.x;
+        let y = event.accelerationIncludingGravity.y;
 
         if (!x && !y) {
           console.warn("No acceleration data available");
           return;
+        }
+
+        // Adjust for screen orientation
+        if (window.orientation === 90 || window.orientation === -90) {
+          // In landscape mode, swap and invert x and y
+          const temp = x;
+          x = -y;
+          y = temp;
         }
 
         window.gravityVector = {
@@ -1608,11 +1608,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       scene.obstacleRadius =
         (scene.obstacleRadius * 3 + MAX_RADIUS) / 4;
       simulate();
-      draw();
+      // draw();
 
       let toRender = "";
 
-      // Skip first and last rows/columns when rendering
       for (let i = f.fNumY - 2; i > 0; i--) {
         let row = "";
         for (let j = 1; j < f.fNumX - 1; j++) {
@@ -1621,16 +1620,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
           let char = " ";
 
-          // const chars = ' ·-~o@#';  // 10 steps from empty to full
-
-          const chars = [
-            '<div class="c0"></div>',
-            '<div class="c1"></div>',
-            '<div class="c2"></div>',
-            '<div class="c3"></div>',
-            '<div class="c4"></div>',
-            '<div class="c5"></div>',
-          ]
+          const chars = ' ·-~=o@#$%█'
 
           const index = Math.floor(cellColor * (chars.length)); // Map 0-1 to 0-9
           char = chars[index];
