@@ -31,7 +31,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <meta name="twitter:card" content="summary_large_image" />
   <title>Triangle FLIP Fluid</title>
   <style>
-    /* disable text selection everywhere */
     * {
       user-select: none;
     }
@@ -57,7 +56,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
     .render {
-      /* render whitespace */
       font-weight: 700;
       white-space: pre;
 
@@ -75,9 +73,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <body>
   <canvas id="canvas"></canvas>
 
-  <div class="render">
-    hola
-  </div>
+  <div class="render"></div>
 
   <script>
     const GRID_SIZE = 11;
@@ -1444,6 +1440,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     });
 
     canvas.addEventListener("touchstart", (event) => {
+      event.preventDefault();
       scene.obstacleRadius = 0.0;
       scene.dt = SPEED_1;
       startDrag(event.touches[0].clientX, event.touches[0].clientY);
