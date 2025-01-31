@@ -1063,34 +1063,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       scene.obstacleVelY = 0.0;
     }
 
-    renderEl.addEventListener("mousedown", (event) => {
+    document.body.addEventListener("mousedown", (event) => {
       scene.obstacleRadius = 0.0;
       scene.dt = SPEED_1;
       startDrag(event.x, event.y);
     });
 
-    renderEl.addEventListener("mouseup", (event) => {
+    document.body.addEventListener("mouseup", (event) => {
       scene.dt = SPEED_2;
       endDrag();
     });
 
-    renderEl.addEventListener("mousemove", (event) => {
+    document.body.addEventListener("mousemove", (event) => {
       drag(event.x, event.y);
     });
 
-    renderEl.addEventListener("touchstart", (event) => {
+    document.body.addEventListener("touchstart", (event) => {
       event.preventDefault();
       scene.obstacleRadius = 0.0;
       scene.dt = SPEED_1;
       startDrag(event.touches[0].clientX, event.touches[0].clientY);
     });
 
-    renderEl.addEventListener("touchend", (event) => {
+    document.body.addEventListener("touchend", (event) => {
       scene.dt = SPEED_2;
       endDrag();
     });
 
-    renderEl.addEventListener(
+    document.body.addEventListener(
       "touchmove",
       (event) => {
         event.preventDefault();
