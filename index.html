@@ -65,7 +65,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(1.08);
+      transform: translate(-50%, -50%);
+    }
+
+    .render div {
+      height: 12px;
+      width: 100vw;
+      display: flex;
+    }
+
+    .render div div {
+      height: 10px;
+      width: 10px;
+      margin: 1px;
+      display: block;
+    }
+
+    .c0 {
+      background: #000000;
+    }
+
+    .c1 {
+      background: #222222;
+    }
+
+    .c2 {
+      background: #444444;
+    }
+
+    .c3 {
+      background: #666666;
+    }
+
+    .c4 {
+      background: #888888;
+    }
+
+    .c5 {
+      background: #ffffff;
     }
   </style>
 </head>
@@ -76,7 +113,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <div class="render"></div>
 
   <script>
-    const GRID_SIZE = 11;
+    const GRID_SIZE = 12;
     const RENDER_SIZE = GRID_SIZE - 2;
     const GRID_POINT_SIZE = RENDER_SIZE / GRID_SIZE;
     const SCALE_TIME = 1;
@@ -1584,13 +1621,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
           let char = " ";
 
-          const chars = ' ·-~=oO#@';  // 10 steps from empty to full
+          // const chars = ' ·-~o@#';  // 10 steps from empty to full
+
+          const chars = [
+            '<div class="c0"></div>',
+            '<div class="c1"></div>',
+            '<div class="c2"></div>',
+            '<div class="c3"></div>',
+            '<div class="c4"></div>',
+            '<div class="c5"></div>',
+          ]
+
           const index = Math.floor(cellColor * (chars.length)); // Map 0-1 to 0-9
           char = chars[index];
 
           row += char;
         }
-        toRender += row + "<br>";
+        toRender += "<div>" + row + "</div>";
       }
 
       renderEl.innerHTML = toRender
