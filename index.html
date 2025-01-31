@@ -72,6 +72,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+
+      z-index: 10;
     }
 
     .c0 {
@@ -130,6 +132,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     canvas.height = realHeight;
     canvas.style.width = realWidth + "px";
     canvas.style.height = realHeight + "px";
+    renderEl.style.width = realWidth + "px";
+    renderEl.style.height = realHeight + "px";
 
     canvas.focus();
 
