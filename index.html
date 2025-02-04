@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Triangle FLIP Fluid" />
+  <link rel="apple-touch-icon" href="https://fluid-triangle.vercel.app/icon.png" />
+
+  <meta property="og:image" content="https://fluid-triangle.vercel.app/og.png" />
+  <meta property="og:title" content="Triangle FLIP Fluid" />
+  <meta property="og:description" content="A Triangle FLIP fluid simulation with device motion support" />
+  <meta property="og:url" content="https://fluid-triangle.vercel.app" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet" />
+
+  <title>Triangle FLIP Fluid</title>
+  <style>
+    :root {
+      --cell-size: 8px;
+    }
+
+    * {
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: "Geist Mono", "Geist Mono Fallback", ui-monospace,
+        SFMono-Regular, "Roboto Mono", Menlo, Monaco,
+        "Liberation Mono", "DejaVu Sans Mono", "Courier New",
+        monospace, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    canvas {
+      z-index: 10;
+      image-rendering: pixelated;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .render {
+      position: fixed;
+      top: 0;
+      left: 0;
+      white-space: pre;
+      letter-spacing: 0.4em;
+    }
+
+    .credits {
+      text-transform: uppercase;
+      position: fixed;
+      top: 0.5em;
+      letter-spacing: 0.1em;
+      z-index: 100;
+    }
+
+    .credits.-right {
+      right: 0;
+    }
+
+    .credits.-left {
+      left: 0;
+    }
+
+    .render,
+    .credits {
+      font-size: var(--cell-size);
+      line-height: var(--cell-size);
+      font-weight: 700;
+    }
+
+    .credits a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      padding: 0.5em 1em 1.5em;
+      text-align: right;
+    }
+
+    .credits a:hover {
+      color: #ff0;
+    }
+
+    .credits .credits-label {
+      display: inline-block;
+      background: black;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <div class="render"></div>
+
+  <div class="credits -left">
+    <a href="https://vercel.com/fluid">
+      <div class="credits-label">vercel.com/fluid</div>
+    </a>
+  </div>
+
+  <div class="credits -right">
+    <a href="https://github.com/javierbyte/fluid-triangle">
+      <div class="credits-label">See source</div>
+    </a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
